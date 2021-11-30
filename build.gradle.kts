@@ -3,7 +3,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt").version("1.18.1")
 }
 
-group = "%GROUP%"
+group = "ad.kata.aoc2021"
 version = "1.0"
 
 repositories {
