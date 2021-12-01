@@ -1,6 +1,6 @@
 package ad.kata.aoc2021.day01
 
-import ad.kata.aoc2021.parseIntArray
+import ad.kata.aoc2021.parseIntList
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -26,7 +26,7 @@ class DepthAnalysisTest {
     ) {
         assertThat(
             DepthAnalysis(
-                SonarSweepReport(sweepReport.parseIntArray())
+                sweepReport.parseDepthsSequence()
             ).totalIncreases()
         ).isEqualTo(
             expectedTotalIncreases
@@ -51,7 +51,7 @@ class DepthAnalysisTest {
     ) {
         assertThat(
             DepthAnalysis(
-                SonarSweepReport(sweepReport.parseIntArray())
+                sweepReport.parseDepthsSequence()
             ).totalIncreasesAfterSmoothing()
         ).isEqualTo(
             expectedTotalIncreases
@@ -71,7 +71,7 @@ class DepthAnalysisTest {
     ) {
         assertThat(
             DepthAnalysis(
-                SonarSweepReport(sweepReport.parseIntArray())
+                sweepReport.parseDepthsSequence()
             ).totalIncreases()
         ).isEqualTo(
             expectedTotalIncreases
@@ -100,3 +100,6 @@ class DepthAnalysisTest {
         )
     }
 }
+
+private fun String.parseDepthsSequence() =
+    parseIntList().map { DepthMeasurement(it) }.asSequence()

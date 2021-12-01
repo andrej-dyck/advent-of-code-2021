@@ -1,8 +1,8 @@
 package ad.kata.aoc2021.day01
 
-class DepthAnalysis private constructor(private val depthsSequence: Sequence<Int>) {
+class DepthAnalysis(private val depthsSequence: Sequence<DepthMeasurement>) {
 
-    constructor(sweepReport: SonarSweepReport) : this(sweepReport.depths.asSequence())
+    constructor(sweepReport: SonarSweepReport) : this(sweepReport.depths)
 
     fun totalIncreases() = depthsSequence.countIncreases()
 
@@ -11,7 +11,12 @@ class DepthAnalysis private constructor(private val depthsSequence: Sequence<Int
             .windowed(smoothingWindow) { it.sum() }
             .countIncreases()
 
-    private fun Sequence<Int>.countIncreases() =
-        windowed(2).count { (d1, d2) -> d1 < d2 }
+    private fun Sequence<DepthMeasurement>.countIncreases() =
+        windowed(2).count { (d1, d2) -> d1.value < d2.value }
 }
 
+@JvmInline
+value class DepthMeasurement(val value: Int)
+
+fun List<DepthMeasurement>.sum() =
+    DepthMeasurement(sumOf { it.value })
