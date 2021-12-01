@@ -8,7 +8,7 @@ class SonarSweepReportTest {
     @Test
     fun `reads sonar sweep report from file`() {
         assertThat(
-            sonarSweepReportFromInput("day01.test-input").depths
+            sonarSweepReportFromInput("day01.input-sample").depths
         ).startsWith(
             187,
             195,

@@ -20,7 +20,52 @@ class DepthAnalysisTest {
         "[199, 200, 208, 210, 200, 207, 240, 269, 260, 263]; 7",
         delimiter = ';'
     )
-    fun `depth analysis tells the number of times a depth measurement increases`(
+    fun `tells the total number of times a depth measurement increases`(
+        sweepReport: String,
+        expectedTotalIncreases: Int
+    ) {
+        assertThat(
+            DepthAnalysis(
+                SonarSweepReport(sweepReport.parseIntArray())
+            ).totalIncreases()
+        ).isEqualTo(
+            expectedTotalIncreases
+        )
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        "[]; 0",
+        "[1]; 0",
+        "[1, 2, 3]; 0",
+        "[1, 2, 3, 4]; 1",
+        "[1, 2, 3, 1]; 0",
+        "[1, 2, 3, 2]; 1",
+        "[1, 2, 3, 2, 4]; 2",
+        "[199, 200, 208, 210, 200, 207, 240, 269, 260, 263]; 5",
+        delimiter = ';'
+    )
+    fun `tells the number of depth measurement increases for a three-measurement sliding window`(
+        sweepReport: String,
+        expectedTotalIncreases: Int
+    ) {
+        assertThat(
+            DepthAnalysis(
+                SonarSweepReport(sweepReport.parseIntArray())
+            ).totalIncreasesAfterSmoothing()
+        ).isEqualTo(
+            expectedTotalIncreases
+        )
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        "[1, 0]; 0",
+        "[1, 1]; 0",
+        "[1, 2]; 1",
+        delimiter = ';'
+    )
+    fun `assume that depth increase must be strictly greater`(
         sweepReport: String,
         expectedTotalIncreases: Int
     ) {
@@ -34,24 +79,24 @@ class DepthAnalysisTest {
     }
 
     @Test
-    fun `assume that depth increase must be strictly greater`() {
+    fun `day01 puzzle number of total increases`() {
         assertThat(
             DepthAnalysis(
-                SonarSweepReport(1, 1)
+                sonarSweepReportFromInput("day01.input-sample")
             ).totalIncreases()
         ).isEqualTo(
-            0
+            21
         )
     }
 
     @Test
-    fun `day01 puzzle number of total increases`() {
+    fun `day01 puzzle number of total increases after smoothing`() {
         assertThat(
             DepthAnalysis(
-                sonarSweepReportFromInput("day01.test-input")
-            ).totalIncreases()
+                sonarSweepReportFromInput("day01.input-sample")
+            ).totalIncreasesAfterSmoothing()
         ).isEqualTo(
-            21
+            18
         )
     }
 }
