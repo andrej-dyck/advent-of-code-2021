@@ -4,7 +4,7 @@ fun main() {
     val submarineCourse = submarineCourseFromInput("day02.input")
 
     println("-- Submarine Course --")
-    /* part 1 */
+    /* part 2 */
     val dest = submarineCourse.finalDestination()
     println("final destination: $dest (product = ${dest.horizontalPosition * dest.depth})")
 }

@@ -1,22 +1,24 @@
 package ad.kata.aoc2021.day02
 
 sealed interface MoveCommand {
-    fun move(origin: MoveVector = MoveVector(0, 0)): MoveVector
+    fun move(origin: SubmarinePosition): SubmarinePosition
 }
 
 data class Forward(private val units: Int) : MoveCommand {
-    override fun move(origin: MoveVector) =
-        origin.copy(horizontalPosition = origin.horizontalPosition + units)
+    override fun move(origin: SubmarinePosition) = origin.copy(
+        horizontalPosition = origin.horizontalPosition + units,
+        depth = origin.depth + origin.aim * units
+    )
 }
 
 data class Up(private val units: Int) : MoveCommand {
-    override fun move(origin: MoveVector) =
-        origin.copy(depth = origin.depth - units)
+    override fun move(origin: SubmarinePosition) =
+        origin.copy(aim = origin.aim - units)
 }
 
 data class Down(private val units: Int) : MoveCommand {
-    override fun move(origin: MoveVector) =
-        origin.copy(depth = origin.depth + units)
+    override fun move(origin: SubmarinePosition) =
+        origin.copy(aim = origin.aim + units)
 }
 
-data class MoveVector(val horizontalPosition: Int, val depth: Int)
+data class SubmarinePosition(val horizontalPosition: Int = 0, val depth: Int = 0, val aim: Int = 0)
