@@ -2,7 +2,7 @@ package ad.kata.aoc2021.day01
 
 import ad.kata.aoc2021.PuzzleInput
 
-data class SonarSweepReport(val depths: Sequence<DepthMeasurement>)
+class SonarSweepReport(val depths: Sequence<DepthMeasurement>)
 
 fun sonarSweepReportFromInput(filename: String) = SonarSweepReport(
     PuzzleInput(filename).lines()
