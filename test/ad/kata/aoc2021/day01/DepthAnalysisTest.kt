@@ -1,6 +1,6 @@
 package ad.kata.aoc2021.day01
 
-import ad.kata.aoc2021.toIntList
+import ad.kata.aoc2021.toIntSequence
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -102,4 +102,4 @@ class DepthAnalysisTest {
 }
 
 private fun String.parseDepthsSequence() =
-    toIntList().map { DepthMeasurement(it) }.asSequence()
+    toIntSequence().map { DepthMeasurement(it) }

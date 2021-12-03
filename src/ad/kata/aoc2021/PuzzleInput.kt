@@ -11,6 +11,5 @@ class PuzzleInput(private val input: File) {
     fun lines(): Sequence<String> = sequence { input.useLines { yieldAll(it) } }
 }
 
-fun PuzzleInput.nonEmptyLines() = lines().filter { it.isNotBlank() }
-fun PuzzleInput.csvLines() = nonEmptyLines().csvLines()
-fun PuzzleInput.csvLinesWithHeaders() = nonEmptyLines().csvLinesWithHeaders()
+fun PuzzleInput.csvLines() = lines().csvLines()
+fun PuzzleInput.csvLinesWithHeaders() = lines().csvLinesWithHeaders()

@@ -9,10 +9,12 @@ fun <T> Sequence<T>.headTail(): Pair<T?, Sequence<T>> {
 }
 
 /* string sequence extensions */
-fun Sequence<String>.csvLines() =
-    map { it.split(',').map(String::trim) }
+fun Sequence<String>.csvLines(delimiter: Char = ',') =
+    filter(String::isNotBlank).map {
+        it.split(delimiter).map(String::trim)
+    }
 
-fun Sequence<String>.csvLinesWithHeaders() =
-    csvLines().headTail().let { (headers, rows) ->
+fun Sequence<String>.csvLinesWithHeaders(delimiter: Char = ',') =
+    csvLines(delimiter).headTail().let { (headers, rows) ->
         rows.map { headers?.zip(it)?.toMap().orEmpty() }
     }
