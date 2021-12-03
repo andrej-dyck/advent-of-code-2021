@@ -9,12 +9,17 @@ class SonarSweepReportTest {
     fun `reads sonar sweep report from file`() {
         assertThatSeq(
             sonarSweepReportFromInput("day01.input-sample").depths
-        ).startsWith(
-            DepthMeasurement(187),
-            DepthMeasurement(195),
+        ).containsExactly(
             DepthMeasurement(199),
-            DepthMeasurement(218),
-            DepthMeasurement(221)
-        ).hasSize(25)
+            DepthMeasurement(200),
+            DepthMeasurement(208),
+            DepthMeasurement(210),
+            DepthMeasurement(200),
+            DepthMeasurement(207),
+            DepthMeasurement(240),
+            DepthMeasurement(269),
+            DepthMeasurement(260),
+            DepthMeasurement(263)
+        )
     }
 }

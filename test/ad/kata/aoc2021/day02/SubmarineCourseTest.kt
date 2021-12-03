@@ -38,7 +38,7 @@ class SubmarineCourseTest {
         assertThat(
             submarineCourseFromInput("day02.input-sample").finalDestination()
         ).isEqualTo(
-            SubmarinePosition(horizontalPosition = 46, depth = 727, aim = 16)
+            SubmarinePosition(horizontalPosition = 15, depth = 60, aim = 10)
         )
     }
 
@@ -46,12 +46,13 @@ class SubmarineCourseTest {
     fun `reads submarine course from file`() {
         assertThatSeq(
             submarineCourseFromInput("day02.input-sample").commands
-        ).startsWith(
+        ).containsExactly(
+            Forward(5),
+            Down(5),
             Forward(8),
-            Down(9),
-            Up(1),
-            Forward(2),
-            Down(6)
-        ).hasSize(25)
+            Up(3),
+            Down(8),
+            Forward(2)
+        )
     }
 }

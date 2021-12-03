@@ -85,7 +85,7 @@ class DepthAnalysisTest {
                 sonarSweepReportFromInput("day01.input-sample")
             ).totalIncreases()
         ).isEqualTo(
-            21
+            7
         )
     }
 
@@ -96,7 +96,7 @@ class DepthAnalysisTest {
                 sonarSweepReportFromInput("day01.input-sample")
             ).totalIncreasesAfterSmoothing()
         ).isEqualTo(
-            18
+            5
         )
     }
 }
