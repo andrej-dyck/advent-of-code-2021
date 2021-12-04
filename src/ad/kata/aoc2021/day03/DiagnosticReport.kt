@@ -1,22 +1,18 @@
 package ad.kata.aoc2021.day03
 
 import ad.kata.aoc2021.PuzzleInput
+import ad.kata.aoc2021.extensions.transposed
 
 class DiagnosticReport(val statusCodes: List<BinaryNumber>) {
-
-    init {
-        require(statusCodes.map { it.size() }.distinct().size <= 1)
-    }
 
     val gammaRate: BinaryNumber by lazy {
         val half = statusCodes.size / 2.0
 
-        if (statusCodes.none()) BinaryNumber("0")
-        else BinaryNumber(
-            statusCodes
-                .map(BinaryNumber::toDigitsAsInts)
-                .reduce(List<Int>::pairwisePlus)
+        BinaryNumber(
+            statusCodes.map(BinaryNumber::toDigitsAsIntList)
+                .reduceCols(List<Int>::sum)
                 .map { if (it >= half) 1 else 0 }
+                .ifEmpty { listOf(0) }
         )
     }
 
@@ -25,7 +21,8 @@ class DiagnosticReport(val statusCodes: List<BinaryNumber>) {
     fun powerConsumption() = gammaRate.toInt() * epsilonRate.toInt()
 }
 
-fun List<Int>.pairwisePlus(other: List<Int>) = zip(other, Int::plus)
+private fun <T, R> List<List<T>>.reduceCols(transform: (List<T>) -> R): List<R> =
+    transposed().map(transform)
 
 fun diagnosticReportFromInput(filename: String) = DiagnosticReport(
     PuzzleInput(filename).lines().map { BinaryNumber(it) }.toList()

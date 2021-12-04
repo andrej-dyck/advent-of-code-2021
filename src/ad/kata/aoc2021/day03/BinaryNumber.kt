@@ -10,10 +10,8 @@ data class BinaryNumber(private val digits: String) {
         digits.joinToString("", transform = Int::toString)
     )
 
-    fun size() = digits.length
-
     fun toInt() = digits.toInt(2)
-    fun toDigitsAsInts() = digits.map { if (it == '1') 1 else 0 }
+    fun toDigitsAsIntList() = digits.map { if (it == '1') 1 else 0 }
 
     fun inv() = BinaryNumber(
         digits.map { if (it == '1') '0' else '1' }.joinToString("")

@@ -8,6 +8,11 @@ fun <T> Sequence<T>.headTail(): Pair<T?, Sequence<T>> {
     return head to iterator.asSequence()
 }
 
+fun <T> Sequence<List<T>>.transposed(): List<Sequence<T>> {
+    val cols = firstOrNull()?.size ?: 0
+    return (0 until cols).map { c -> map { it[c] } }
+}
+
 /* string sequence extensions */
 fun Sequence<String>.csvLines(delimiter: Char = ',') =
     filter(String::isNotBlank).map {
