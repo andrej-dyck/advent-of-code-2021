@@ -6,4 +6,5 @@ fun main() {
     println("-- Binary Diagnostic --")
     /* part 3 */
     println("submarine power consumption: ${diagnosticReport.powerConsumption()}")
+    println("live support rating: ${diagnosticReport.liveSupportRating()}")
 }

@@ -7,14 +7,36 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 
-class DiagnosticReportTest {
+class PowerConsumptionTest {
+
+    @ParameterizedTest
+    @CsvSource(
+        "[0]; 0",
+        "[1]; 0",
+        "[00,01]; 2",
+        "[00,11]; 0",
+        "[01,01]; 2",
+        "[10,01]; 0",
+        "[10,00]; 2",
+        "[00100,11110,10110,10111,10101,01111,00111,11100,10000,11001,00010,01010]; 198",
+        delimiter = ';'
+    )
+    fun `power consumption is the product of gama and epsilon rate`(
+        numbers: String,
+        powerConsumption: Int
+    ) {
+        assertThat(
+            DiagnosticReport(numbers.parseBinaryNumbersList()).powerConsumption()
+        ).isEqualTo(
+            powerConsumption
+        )
+    }
 
     @ParameterizedTest
     @CsvSource(
         "[0]; 0",
         "[1]; 1",
         "[0,0]; 0",
-        "[1,0]; 1",
         "[1,0]; 1",
         "[0,1]; 1",
         "[1,1]; 1",
@@ -37,7 +59,7 @@ class DiagnosticReportTest {
         expectedGammaRate: String
     ) {
         assertThat(
-            DiagnosticReport(numbers.parseList { BinaryNumber(it) }).gammaRate
+            DiagnosticReport(numbers.parseBinaryNumbersList()).gammaRate
         ).isEqualTo(
             BinaryNumber(expectedGammaRate)
         )
@@ -64,35 +86,12 @@ class DiagnosticReportTest {
         ]
     )
     fun `epsilon rate is the binary inverse of gama rate`(numbers: String) {
-        val diagnosticReport = DiagnosticReport(numbers.parseList { BinaryNumber(it) })
+        val diagnosticReport = DiagnosticReport(numbers.parseBinaryNumbersList())
+
         assertThat(
             diagnosticReport.epsilonRate
         ).isEqualTo(
             diagnosticReport.gammaRate.inv()
-        )
-    }
-
-    @ParameterizedTest
-    @CsvSource(
-        "[0]; 0",
-        "[1]; 0",
-        "[00,01]; 2",
-        "[00,11]; 0",
-        "[01,01]; 2",
-        "[10,01]; 0",
-        "[10,00]; 2",
-        "[00100,11110,10110,10111,10101,01111,00111,11100,10000,11001,00010,01010]; 198",
-        delimiter = ';'
-    )
-    fun `power consumption is the product of gama and epsilon rate`(
-        numbers: String,
-        powerConsumption: Int
-    ) {
-        val diagnosticReport = DiagnosticReport(numbers.parseList { BinaryNumber(it) })
-        assertThat(
-            diagnosticReport.powerConsumption()
-        ).isEqualTo(
-            powerConsumption
         )
     }
 
@@ -116,3 +115,5 @@ class DiagnosticReportTest {
         )
     }
 }
+
+internal fun String.parseBinaryNumbersList() = parseList { BinaryNumber(it) }
