@@ -1,20 +1,25 @@
 package ad.kata.aoc2021
 
-/* sequences and lists of form [a,b,c,d,...] */
-fun <T> String.parseSequence(delimiter: Char = ',', transform: (String) -> T) =
-    removeSurrounding("[", "]")
-        .splitToSequence(delimiter)
+/* sequences of form a^b^c^d^... */
+fun <T> String.parseSequence(delimiter: Char = '^', transform: (String) -> T) =
+    splitToSequence(delimiter)
         .map(String::trim)
         .filter(String::isNotEmpty)
         .map(transform)
 
+fun String.parseIntSequence(delimiter: Char = '^') = parseSequence(delimiter) { it.toInt() }
+
+/* lists of form [a,b,c,d,...] */
 fun <T> String.parseList(delimiter: Char = ',', transform: (String) -> T) =
-    parseSequence(delimiter, transform).toList()
+    removeSurrounding("[", "]")
+        .parseSequence(delimiter, transform)
+        .toList()
 
-fun String.toIntSequence() = parseSequence { it.toInt() }
+fun <T> String.parseListAsSequence(delimiter: Char = ',', transform: (String) -> T) =
+    parseList(delimiter, transform).asSequence()
 
-fun String.toListOfLists(outerDelimiter: Char, innerDelimiter: Char = ',') =
-    parseList(outerDelimiter) { l -> l.parseList(innerDelimiter) { v -> v } }
+fun String.parseIntList(delimiter: Char = ',') = parseList(delimiter, String::toInt)
+fun String.parseStringList(delimiter: Char = ',') = parseList(delimiter, String::toString)
 
 /* vectors of form (a,b) */
 private fun <T> String.parseVector(transform: (List<String>) -> T) =

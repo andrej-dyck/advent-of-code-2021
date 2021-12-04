@@ -1,7 +1,7 @@
 package ad.kata.aoc2021.day02
 
 import ad.kata.aoc2021.assertThatSeq
-import ad.kata.aoc2021.parseSequence
+import ad.kata.aoc2021.parseListAsSequence
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -26,7 +26,7 @@ class SubmarineCourseTest {
     ) {
         assertThat(
             SubmarineCourse(
-                plannedCourse.parseSequence { it.parseMoveCommand() }
+                plannedCourse.parseListAsSequence { it.parseMoveCommand() }
             ).finalDestination()
         ).isEqualTo(
             expectedDestination.parseSubmarinePosition()

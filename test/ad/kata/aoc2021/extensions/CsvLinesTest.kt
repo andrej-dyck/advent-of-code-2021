@@ -1,7 +1,8 @@
 package ad.kata.aoc2021.extensions
 
 import ad.kata.aoc2021.assertThatSeq
-import ad.kata.aoc2021.toListOfLists
+import ad.kata.aoc2021.parseList
+import ad.kata.aoc2021.parseStringList
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
@@ -25,7 +26,7 @@ class CsvLinesTest {
         assertThatSeq(
             lines.splitToSequence('^').csvLines()
         ).containsExactlyElementsOf(
-            expectedCsv.toListOfLists(outerDelimiter = '^')
+            expectedCsv.parseListOfLists()
         )
     }
 
@@ -46,7 +47,10 @@ class CsvLinesTest {
                 .csvLinesWithHeaders()
                 .map { m -> m.entries.map { e -> "${e.key}=${e.value}" } }
         ).containsExactlyElementsOf(
-            expectedCsv.toListOfLists(outerDelimiter = '^')
+            expectedCsv.parseListOfLists()
         )
     }
+
+    private fun String.parseListOfLists() =
+        parseList('^') { it.parseStringList() }
 }
