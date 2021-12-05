@@ -40,6 +40,24 @@ class BingoBoard private constructor(
 
     private fun List<Coordinate>.count5GroupedBy(grouping: (Coordinate) -> Int) =
         groupingBy(grouping).eachCount().any { (_, c) -> c == 5 }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as BingoBoard
+
+        if (numbers != other.numbers) return false
+        if (hits != other.hits) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = numbers.hashCode()
+        result = 31 * result + hits.hashCode()
+        return result
+    }
 }
 
 private typealias Coordinate = Pair<Int, Int>
