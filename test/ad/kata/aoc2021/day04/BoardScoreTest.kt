@@ -1,6 +1,6 @@
 package ad.kata.aoc2021.day04
 
-import ad.kata.aoc2021.parseIntArray
+import ad.kata.aoc2021.parseIntList
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -30,7 +30,7 @@ class BoardScoreTest {
                 4  9 14 19 24
                 5 10 15 20 25"""
                 .parseBingoBoard()
-                .acceptNumbers(*drawnNumbers.parseIntArray())
+                .withAcceptedNumbers(drawnNumbers.parseIntList())
                 .score()
         ).isEqualTo(
             expectedScore
@@ -56,7 +56,7 @@ class BoardScoreTest {
                 4  9 14 19 24
                 5 10 15 20 25"""
                 .parseBingoBoard()
-                .acceptNumbers(*drawnNumbers.parseIntArray())
+                .withAcceptedNumbers(drawnNumbers.parseIntList())
                 .score()
         ).isZero
     }
@@ -70,7 +70,7 @@ class BoardScoreTest {
                22 11 13  6  5
                 2  0 12  3  7"""
                 .parseBingoBoard()
-                .acceptNumbers(7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24)
+                .withAcceptedNumbers(7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24)
                 .score()
         ).isEqualTo(
             4512

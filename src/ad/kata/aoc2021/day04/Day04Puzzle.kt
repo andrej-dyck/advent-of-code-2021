@@ -7,4 +7,6 @@ fun main() {
     /* part 1 */
     val firstWinningBoard = bingoSystem.firstWinningBoard()
     println("score of first winning board: ${firstWinningBoard?.score() ?: 0}")
+    val loosingBoard = bingoSystem.lastWinningBoard()
+    println("score of last winning board: ${loosingBoard?.score() ?: 0}")
 }

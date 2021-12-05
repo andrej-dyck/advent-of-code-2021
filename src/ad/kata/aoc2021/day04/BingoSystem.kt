@@ -10,12 +10,19 @@ class BingoSystem(
 ) {
     fun play() =
         numbersDrawSequence
-            .runningFold(blankBoards) { boards, n -> boards.map { it.acceptNumbers(n) } }
+            .runningFold(blankBoards) { boards, n -> boards.map { it.acceptNumber(n) } }
             .drop(1)
 }
 
 fun BingoSystem.firstWinningBoard() =
     play().firstNotNullOfOrNull { boards -> boards.firstOrNull { it.isBingo() } }
+
+fun BingoSystem.lastWinningBoard() =
+    play().fold(emptyList<BingoBoard>()) { winningBoards, boards ->
+        winningBoards + boards
+            .filterNot { it in winningBoards }
+            .filter { it.isBingo() }
+    }.lastOrNull()
 
 fun bingoSystemFromInput(filename: String) =
     PuzzleInput(filename)

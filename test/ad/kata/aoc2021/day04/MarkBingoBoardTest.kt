@@ -1,6 +1,5 @@
 package ad.kata.aoc2021.day04
 
-import ad.kata.aoc2021.parseIntArray
 import ad.kata.aoc2021.parseIntList
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.params.ParameterizedTest
@@ -29,7 +28,32 @@ class MarkBingoBoardTest {
                 4  9 14 19 24
                 5 10 15 20 25"""
                 .parseBingoBoard()
-                .acceptNumbers(*drawnNumbers.parseIntArray())
+                .withAcceptedNumbers(drawnNumbers.parseIntList())
+                .hits()
+        ).containsExactlyElementsOf(
+            expectedHits.parseIntList()
+        )
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        "[1,2,3,4,5,6] -> [1,2,3,4,5]",
+        "[1,6,11,16,21,2] -> [1,6,11,16,21]",
+        "[25,20,15,10,5,7] -> [25,20,15,10,5]",
+        delimiterString = "->"
+    )
+    fun `does not accept any more numbers after bingo`(
+        drawnNumbers: String,
+        expectedHits: String
+    ) {
+        assertThat(
+            """ 1  6 11 16 21
+                2  7 12 17 22
+                3  8 13 18 23
+                4  9 14 19 24
+                5 10 15 20 25"""
+                .parseBingoBoard()
+                .withAcceptedNumbers(drawnNumbers.parseIntList())
                 .hits()
         ).containsExactlyElementsOf(
             expectedHits.parseIntList()
@@ -46,7 +70,7 @@ class MarkBingoBoardTest {
                 4  9 14 19 24
                 5 10 15 20 25"""
                 .parseBingoBoard()
-                .acceptNumbers(*drawnNumbers.parseIntArray())
+                .withAcceptedNumbers(drawnNumbers.parseIntList())
                 .hits()
         ).isEmpty()
     }
@@ -74,7 +98,7 @@ class MarkBingoBoardTest {
                 4  9 14 19 24
                 5 10 15 20 25"""
                 .parseBingoBoard()
-                .acceptNumbers(*drawnNumbers.parseIntArray())
+                .withAcceptedNumbers(drawnNumbers.parseIntList())
                 .isBingo()
         ).`as`("is bingo").isTrue
     }
@@ -98,8 +122,17 @@ class MarkBingoBoardTest {
                 4  9 14 19 24
                 5 10 15 20 25"""
                 .parseBingoBoard()
-                .acceptNumbers(*drawnNumbers.parseIntArray())
+                .withAcceptedNumbers(drawnNumbers.parseIntList())
                 .isBingo()
         ).`as`("is bingo").isFalse
     }
 }
+
+internal fun BingoBoard.withAcceptedNumbers(drawnNumbers: Iterable<Int>) =
+    drawnNumbers.fold(this) { b, n -> b.acceptNumber(n) }
+
+internal fun BingoBoard.withAcceptedNumbers(vararg drawnNumbers: Int) =
+    withAcceptedNumbers(drawnNumbers.asIterable())
+
+internal fun BingoBoard.withAcceptedNumbers(drawnNumbers: Sequence<Int>) =
+    withAcceptedNumbers(drawnNumbers.asIterable())

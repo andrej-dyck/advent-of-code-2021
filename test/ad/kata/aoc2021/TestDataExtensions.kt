@@ -19,8 +19,6 @@ fun <T> String.parseListAsSequence(delimiter: Char = ',', transform: (String) ->
     parseList(delimiter, transform).asSequence()
 
 fun String.parseIntList(delimiter: Char = ',') = parseList(delimiter, String::toInt)
-fun String.parseIntArray() = parseIntList().toIntArray()
-
 fun String.parseStringList(delimiter: Char = ',') = parseList(delimiter, String::toString)
 
 /* vectors of form (a,b) */

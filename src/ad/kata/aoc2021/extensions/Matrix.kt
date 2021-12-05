@@ -1,6 +1,6 @@
 package ad.kata.aoc2021.extensions
 
-class Matrix<T>(private val values: List<List<T>>) {
+data class Matrix<T>(private val values: List<List<T>>) {
 
     init {
         require(values.allRowsEqualInSize())
@@ -19,11 +19,13 @@ class Matrix<T>(private val values: List<List<T>>) {
 
 data class Dimension(val rows: Int, val cols: Int)
 
+fun <T> List<List<T>>.toMatrix() = Matrix(this)
+
 fun <T> Matrix<T>.transposed() = toListOfLists().transposed()
 
 fun <T, R> Matrix<T>.mapIndexed(transform: (rowIndex: Int, colIndex: Int, value: T) -> R) =
     toListOfLists().mapIndexed { colIndex, c ->
         c.mapIndexed { rowIndex, v -> transform(colIndex, rowIndex, v) }
-    }.let { Matrix(it) }
+    }.toMatrix()
 
 fun <T> Matrix<T>.flatten() = toListOfLists().flatten()

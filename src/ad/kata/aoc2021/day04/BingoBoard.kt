@@ -1,9 +1,6 @@
 package ad.kata.aoc2021.day04
 
-import ad.kata.aoc2021.extensions.Dimension
-import ad.kata.aoc2021.extensions.Matrix
-import ad.kata.aoc2021.extensions.flatten
-import ad.kata.aoc2021.extensions.mapIndexed
+import ad.kata.aoc2021.extensions.*
 
 class BingoBoard private constructor(
     private val numbers: Map<Int, Coordinate>,
@@ -24,12 +21,9 @@ class BingoBoard private constructor(
     fun numbers() = numbers.keys
     fun hits() = hits
 
-    fun acceptNumbers(vararg drawnNumbers: Int): BingoBoard {
-        val newHits = drawnNumbers.filter { it in numbers() }
-
-        return if (newHits.none()) this
-        else BingoBoard(numbers, hits + newHits)
-    }
+    fun acceptNumber(drawnNumber: Int) =
+        if (drawnNumber !in numbers() || isBingo()) this
+        else BingoBoard(numbers, hits + drawnNumber)
 
     fun isBingo() =
         hits.size >= 5 && marks().let { marks ->
@@ -40,6 +34,8 @@ class BingoBoard private constructor(
 
     private fun List<Coordinate>.count5GroupedBy(grouping: (Coordinate) -> Int) =
         groupingBy(grouping).eachCount().any { (_, c) -> c == 5 }
+
+    fun blankCopy() = if(hits.isEmpty()) this else BingoBoard(numbers)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -67,5 +63,5 @@ fun bingoBoardFromLines(boardLines: List<String>) = BingoBoard(
         .map(String::trim)
         .map { it.split("\\s+".toRegex()) }
         .map { it.map(String::toInt) }
-        .let { Matrix(it) }
+        .toMatrix()
 )

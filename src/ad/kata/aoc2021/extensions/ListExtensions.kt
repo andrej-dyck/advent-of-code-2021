@@ -5,3 +5,5 @@ fun <T> List<T>.headTail() =
 
 fun <T> List<List<T>>.transposed() =
     asSequence().transposed().map { it.toList() }
+
+fun <T> List<T>.second() = drop(1).first()

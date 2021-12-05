@@ -1,6 +1,7 @@
 package ad.kata.aoc2021.day04
 
 import ad.kata.aoc2021.assertThatSeq
+import ad.kata.aoc2021.extensions.second
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -26,54 +27,87 @@ class BingoSystemTest {
             ).play()
         ).containsExactly(
             listOf(
-                firstBoard.acceptNumbers(1),
+                firstBoard.withAcceptedNumbers(1),
                 secondBoard
             ),
             listOf(
-                firstBoard.acceptNumbers(1, 2),
-                secondBoard.acceptNumbers(2)
+                firstBoard.withAcceptedNumbers(1, 2),
+                secondBoard.withAcceptedNumbers(2)
             ),
             listOf(
-                firstBoard.acceptNumbers(1, 2, 8),
-                secondBoard.acceptNumbers(2, 8)
+                firstBoard.withAcceptedNumbers(1, 2, 8),
+                secondBoard.withAcceptedNumbers(2, 8)
             ),
             listOf(
-                firstBoard.acceptNumbers(1, 2, 8),
-                secondBoard.acceptNumbers(2, 8, 42)
+                firstBoard.withAcceptedNumbers(1, 2, 8),
+                secondBoard.withAcceptedNumbers(2, 8, 42)
             ),
             listOf(
-                firstBoard.acceptNumbers(1, 2, 8, 25),
-                secondBoard.acceptNumbers(2, 8, 42)
+                firstBoard.withAcceptedNumbers(1, 2, 8, 25),
+                secondBoard.withAcceptedNumbers(2, 8, 42)
             )
         )
     }
 
     @Test
     fun `is capable to figure out which board wins first`() {
-        val winningBoard = """14 21 17 24  4
-                              10 16 15  9 19
-                              18  8 23 26 20
-                              22 11 13  6  5
-                               2  0 12  3  7""".parseBingoBoard()
+        val bingoSystem = BingoSystem(
+            numbersDrawSequence = sequenceOf(7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24),
+            blankBoards = listOf(
+                """22 13 17 11  0
+                    8  2 23  4 24
+                   21  9 14 16  7
+                    6 10  3 18  5
+                    1 12 20 15 19""".parseBingoBoard(),
+                """ 3 15  0  2 22
+                    9 18 13 17  5
+                   19  8  7 25 23
+                   20 11 10 24  4
+                   14 21 16 12  6""".parseBingoBoard(),
+                """14 21 17 24  4
+                   10 16 15  9 19
+                   18  8 23 26 20
+                   22 11 13  6  5
+                    2  0 12  3  7""".parseBingoBoard()
+            )
+        )
+
         assertThat(
-            BingoSystem(
-                numbersDrawSequence = sequenceOf(7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24, 10),
-                blankBoards = listOf(
-                    """22 13 17 11  0
-                        8  2 23  4 24
-                       21  9 14 16  7
-                        6 10  3 18  5
-                        1 12 20 15 19""".parseBingoBoard(),
-                    """ 3 15  0  2 22
-                        9 18 13 17  5
-                       19  8  7 25 23
-                       20 11 10 24  4
-                       14 21 16 12  6""".parseBingoBoard(),
-                    winningBoard
-                )
-            ).firstWinningBoard()
+            bingoSystem.firstWinningBoard()
         ).isEqualTo(
-            winningBoard.acceptNumbers(7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24)
+            bingoSystem.blankBoards.last()
+                .withAcceptedNumbers(bingoSystem.numbersDrawSequence)
+        )
+    }
+
+    @Test
+    fun `is capable to figure out which board wins last`() {
+        val bingoSystem = BingoSystem(
+            numbersDrawSequence = sequenceOf(7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24, 10, 16, 13),
+            blankBoards = listOf(
+                """22 13 17 11  0
+                    8  2 23  4 24
+                   21  9 14 16  7
+                    6 10  3 18  5
+                    1 12 20 15 19""".parseBingoBoard(),
+                """ 3 15  0  2 22
+                    9 18 13 17  5
+                   19  8  7 25 23
+                   20 11 10 24  4
+                   14 21 16 12  6""".parseBingoBoard(),
+                """14 21 17 24  4
+                   10 16 15  9 19
+                   18  8 23 26 20
+                   22 11 13  6  5
+                    2  0 12  3  7""".parseBingoBoard()
+            )
+        )
+
+        assertThat(
+            bingoSystem.lastWinningBoard()
+        ).isEqualTo(
+            bingoSystem.blankBoards.second()
+                .withAcceptedNumbers(bingoSystem.numbersDrawSequence)
         )
     }
 
@@ -81,34 +115,9 @@ class BingoSystemTest {
     fun `reads drawn numbers from input`() {
         assertThatSeq(
             bingoSystemFromInput("day04.input-sample").numbersDrawSequence
-        ).containsExactly(
-            7,
-            4,
-            9,
-            5,
-            11,
-            17,
-            23,
-            2,
-            0,
-            14,
-            21,
-            24,
-            10,
-            16,
-            13,
-            6,
-            15,
-            25,
-            12,
-            22,
-            18,
-            20,
-            8,
-            19,
-            3,
-            26,
-            1
+        ).containsExactlyElementsOf(
+            "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1"
+                .split(',').map(String::toInt)
         )
     }
 
@@ -140,14 +149,13 @@ class BingoSystemTest {
         assertThat(
             bingoSystemFromInput("day04.input-sample")
                 .firstWinningBoard()
+                ?.blankCopy()
         ).isEqualTo(
             """14 21 17 24  4
                10 16 15  9 19
                18  8 23 26 20
                22 11 13  6  5
-                2  0 12  3  7"""
-                .parseBingoBoard()
-                .acceptNumbers(7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24)
+                2  0 12  3  7""".parseBingoBoard()
         )
     }
 
@@ -158,5 +166,14 @@ class BingoSystemTest {
                 .firstWinningBoard()
                 ?.score()
         ).isEqualTo(4512)
+    }
+
+    @Test
+    fun `sample input loosing board score is 1924`() {
+        assertThat(
+            bingoSystemFromInput("day04.input-sample")
+                .lastWinningBoard()
+                ?.score()
+        ).isEqualTo(1924)
     }
 }
