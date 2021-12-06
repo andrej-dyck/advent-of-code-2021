@@ -1,4 +1,7 @@
-package ad.kata.aoc2021.extensions
+package ad.kata.aoc2021.day04
+
+import ad.kata.aoc2021.extensions.headTail
+import ad.kata.aoc2021.extensions.transposed
 
 data class Matrix<T>(private val values: List<List<T>>) {
 

@@ -1,7 +1,5 @@
 package ad.kata.aoc2021.day04
 
-import ad.kata.aoc2021.extensions.*
-
 class BingoBoard private constructor(
     private val numbers: Map<Int, Coordinate>,
     private val hits: List<Int> = emptyList()
