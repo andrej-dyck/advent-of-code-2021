@@ -96,7 +96,7 @@ class PowerConsumptionTest {
     }
 
     @Test
-    fun `ready diagnostic report from input`() {
+    fun `reads diagnostic report from input`() {
         assertThat(
             diagnosticReportFromInput("day03.input-sample").statusCodes
         ).containsExactly(

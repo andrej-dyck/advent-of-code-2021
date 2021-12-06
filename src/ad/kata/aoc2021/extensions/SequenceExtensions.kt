@@ -15,9 +15,7 @@ fun <T> Sequence<List<T>>.transposed(): List<Sequence<T>> {
 
 /* string sequence extensions */
 fun Sequence<String>.csvLines(delimiter: Char = ',') =
-    filter(String::isNotBlank).map {
-        it.split(delimiter).map(String::trim)
-    }
+    filter(String::isNotBlank).map { it.splitTrim(delimiter) }
 
 fun Sequence<String>.csvLinesWithHeaders(delimiter: Char = ',') =
     csvLines(delimiter).headTail().let { (headers, rows) ->

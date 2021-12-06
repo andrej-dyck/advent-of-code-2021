@@ -1,6 +1,6 @@
 package ad.kata.aoc2021.day02
 
-import ad.kata.aoc2021.toIntTriple
+import ad.kata.aoc2021.parseIntTriple
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -107,4 +107,4 @@ class MoveCommandsTest {
 }
 
 internal fun String.parseSubmarinePosition() =
-    toIntTriple().let { (h, d, a) -> SubmarinePosition(horizontalPosition = h, depth = d, aim = a) }
+    parseIntTriple().let { (h, d, a) -> SubmarinePosition(horizontalPosition = h, depth = d, aim = a) }

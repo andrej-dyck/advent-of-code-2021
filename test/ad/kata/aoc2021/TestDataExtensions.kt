@@ -1,5 +1,7 @@
 package ad.kata.aoc2021
 
+import ad.kata.aoc2021.extensions.splitTrim
+
 /* sequences of form a^b^c^d^... */
 fun <T> String.parseSequence(delimiter: Char = '^', transform: (String) -> T) =
     splitToSequence(delimiter)
@@ -24,12 +26,11 @@ fun String.parseStringList(delimiter: Char = ',') = parseList(delimiter, String:
 /* vectors of form (a,b) */
 private fun <T> String.parseVector(transform: (List<String>) -> T) =
     removeSurrounding("(", ")")
-        .split(',')
-        .map(String::trim)
+        .splitTrim(',')
         .let(transform)
 
-fun String.toIntPair() =
+fun String.parseIntPair() =
     parseVector { (i1, i2) -> i1.toInt() to i2.toInt() }
 
-fun String.toIntTriple() =
+fun String.parseIntTriple() =
     parseVector { (i1, i2, i3) -> Triple(i1.toInt(), i2.toInt(), i3.toInt()) }
