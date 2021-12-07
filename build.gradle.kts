@@ -14,7 +14,7 @@ repositories {
 dependencies {
     // JUnit 5
     testImplementation(platform("org.junit:junit-bom:5.8.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     // AssertJ
     testImplementation("org.assertj:assertj-core:3.21.0")
     // jqwik
