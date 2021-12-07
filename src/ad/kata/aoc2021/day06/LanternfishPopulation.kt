@@ -11,7 +11,7 @@ data class LanternfishPopulation(val state: Map<LanternfishTimer, Amount>) {
         : this(stateEntries.toMapMerging(List<Amount>::sum))
 
     constructor(timers: Sequence<LanternfishTimer>) : this(
-        timers.groupingBy { it }.eachCount().mapValues { Amount(it.value) }
+        timers.groupingBy { it }.eachCount().mapValues { Amount(it.value.toLong()) }
     )
 
     fun totalAmount() = state.values.fold(Amount(0), Amount::plus)
@@ -39,7 +39,7 @@ fun LanternfishPopulation.afterDays(days: Int) =
     simulateDays().take(days + 1).last()
 
 @JvmInline
-value class Amount internal constructor(val value: Int) {
+value class Amount internal constructor(val value: Long) {
 
     init {
         require(value >= 0)

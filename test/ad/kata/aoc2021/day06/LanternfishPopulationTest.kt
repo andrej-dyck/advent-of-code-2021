@@ -22,7 +22,7 @@ class LanternfishPopulationTest {
     )
     fun `knows the total amount of fish`(
         population: String,
-        expectedAmount: Int
+        expectedAmount: Long
     ) {
         assertThat(
             LanternfishPopulation(population.parsePopulationMap()).totalAmount()
@@ -134,7 +134,7 @@ class LanternfishPopulationTest {
         "18, 26",
         "80, 5934",
     )
-    fun `sample input total population after N days`(days: Int, expectedAmount: Int) {
+    fun `sample input total population after N days`(days: Int, expectedAmount: Long) {
         assertThat(
             LanternfishPopulation(
                 lanternfishTimersOf(3, 4, 3, 1, 2)
@@ -147,5 +147,5 @@ class LanternfishPopulationTest {
 
 internal fun String.parsePopulationMap() =
     parseSequence { it.parseIntPair() }
-        .map { LanternfishTimer(it.first) to Amount(it.second) }
+        .map { LanternfishTimer(it.first) to Amount(it.second.toLong()) }
         .toMap()
