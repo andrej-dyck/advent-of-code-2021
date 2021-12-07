@@ -9,15 +9,17 @@ class CrabPositions(val horizontalPositions: List<HorizontalPosition>) {
 
     fun alignmentCosts() =
         positionValuesRange()
-            ?.map { p -> fuelCostTo(p) }
+            ?.map { p -> fuelCostTo(p, ::sum0ToN) }
             ?.minOrNull() ?: Fuel(0)
 
-    private fun fuelCostTo(p: HorizontalPosition) =
-        Fuel(horizontalPositions.sumOf { it.absDistanceTo(p) })
+    private fun fuelCostTo(p: HorizontalPosition, fuelAmountForDistance: (Int) -> Int) =
+        Fuel(horizontalPositions.sumOf { fuelAmountForDistance(it.absDistanceTo(p)) })
 
     private fun positionValuesRange() =
         horizontalPositions.minMaxOrNull()?.let { (min, max) -> min..max }
 }
+
+fun sum0ToN(n: Int) = (n * (n + 1)) / 2 // gauss summation
 
 @JvmInline
 value class HorizontalPosition(val value: Int) : Comparable<HorizontalPosition> {
