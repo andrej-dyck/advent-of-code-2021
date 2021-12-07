@@ -1,11 +1,11 @@
 package ad.kata.aoc2021
 
 import ad.kata.aoc2021.extensions.splitTrim
+import ad.kata.aoc2021.extensions.splitTrimToSequence
 
 /* sequences of form a^b^c^d^... */
 fun <T> String.parseSequence(delimiter: Char = '^', transform: (String) -> T) =
-    splitToSequence(delimiter)
-        .map(String::trim)
+    splitTrimToSequence(delimiter)
         .filter(String::isNotEmpty)
         .map(transform)
 
