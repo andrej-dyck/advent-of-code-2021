@@ -33,6 +33,30 @@ kotlin {
 sourceSets["main"].resources.srcDirs("resources")
 sourceSets["test"].resources.srcDirs("test-resources")
 
+/* Create Puzzle dirs and files */
+tasks.register("prepPuzzle") {
+    doLast {
+        val dayNumber = project.property("day")?.toString()
+            ?: throw GradleException("provide the puzzle day via -Pday=08")
+
+        mkdir("src/ad/kata/aoc2021/day$dayNumber")
+        mkdir("test/ad/kata/aoc2021/day$dayNumber")
+        file("src/ad/kata/aoc2021/day$dayNumber/Day${dayNumber}Puzzle.kt").writeText(
+            """
+            package ad.kata.aoc2021.day$dayNumber
+
+            fun main() {
+                println("-- Day $dayNumber Puzzle --")
+                /* part 1 */
+                println("TODO")
+            }
+        """.trimIndent()
+        )
+        file("resources/day$dayNumber.input").writeText("")
+        file("resources/day$dayNumber.input-sample").writeText("")
+    }
+}
+
 /* Detekt */
 detekt {
     source = files(sources.map { it.second })

@@ -6,6 +6,12 @@
 
 In this repository, the code tackles the [2021](https://adventofcode.com/2021) puzzles. 
 
+## Prepare a puzzle with Gradle
+```
+./gradlew prepPuzzle -Pday=01
+```
+This task will create a package `day01` in `src` and `test`, as well as create two files `day01.input` and `day01.input-sample` in `resources`. Finally, it will create a `Day01Puzzle.kt` in the `src` package.
+
 ## Build with Gradle
 ```
 ./gradlew build
