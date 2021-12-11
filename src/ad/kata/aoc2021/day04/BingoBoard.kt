@@ -1,5 +1,7 @@
 package ad.kata.aoc2021.day04
 
+import ad.kata.aoc2021.types.*
+
 class BingoBoard private constructor(
     private val numbers: Map<Int, Coordinate>,
     private val hits: List<Int> = emptyList()
@@ -7,7 +9,7 @@ class BingoBoard private constructor(
 
     constructor(boardMatrix: Matrix<Int>) : this(
         boardMatrix
-            .mapIndexed { r, c, n -> n to (r to c) }
+            .mapIndexed { i, n -> n to i }
             .flatten()
             .toMap()
     ) {
@@ -25,7 +27,7 @@ class BingoBoard private constructor(
 
     fun isBingo() =
         hits.size >= 5 && marks().let { marks ->
-            marks.count5GroupedBy { it.first } || marks.count5GroupedBy { it.second }
+            marks.count5GroupedBy { it.rowIndex } || marks.count5GroupedBy { it.colIndex }
         }
 
     private fun marks() = hits.map { numbers.getValue(it) }
@@ -33,7 +35,7 @@ class BingoBoard private constructor(
     private fun List<Coordinate>.count5GroupedBy(grouping: (Coordinate) -> Int) =
         groupingBy(grouping).eachCount().any { (_, c) -> c == 5 }
 
-    fun blankCopy() = if(hits.isEmpty()) this else BingoBoard(numbers)
+    fun blankCopy() = if (hits.isEmpty()) this else BingoBoard(numbers)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -53,8 +55,6 @@ class BingoBoard private constructor(
         return result
     }
 }
-
-private typealias Coordinate = Pair<Int, Int>
 
 fun bingoBoardFromLines(boardLines: List<String>) = BingoBoard(
     boardLines
