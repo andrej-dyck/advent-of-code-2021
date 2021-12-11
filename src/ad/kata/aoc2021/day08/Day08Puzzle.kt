@@ -4,7 +4,7 @@ fun main() {
     val troubleshooting = troubleShootingFromInput("day08.input")
 
     println("-- Seven Segment Display Troubleshooting --")
-    /* part 1 */
-    val countOf1478 = troubleshooting.identifiedOutputDigits().count()
-    println("Total count of {1,2,7,8} in output values: $countOf1478")
+    /* part 2 */
+    val sumOfOutputValues = troubleshooting.deducedOutputValues().filterNotNull().sum()
+    println("Sum of output values: $sumOfOutputValues")
 }

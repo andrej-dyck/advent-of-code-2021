@@ -756,7 +756,7 @@ style:
     active: true # DIFFERENT FROM DEFAULT (false)
   UnderscoresInNumericLiterals:
     active: true # DIFFERENT FROM DEFAULT (false)
-    acceptableLength: 4
+    acceptableLength: 5 # DIFFERENT FROM DEFAULT (4)
   UnnecessaryAbstractClass:
     active: true
   UnnecessaryAnnotationUseSiteTarget:

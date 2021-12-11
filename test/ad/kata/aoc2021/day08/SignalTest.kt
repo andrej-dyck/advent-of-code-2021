@@ -7,13 +7,13 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 
-class SegmentsDigitTest {
+class SignalTest {
 
     @ParameterizedTest
     @ValueSource(strings = ["a", "b", "c", "d", "e", "f", "g", "cf", "acf", "abcdefg"])
     fun `accepts set of segments a,b,c,d,e,f,g`(segments: String) {
         assertThatCode {
-            SegmentsDigit(segments)
+            Signal(segments)
         }.doesNotThrowAnyException()
     }
 
@@ -30,11 +30,11 @@ class SegmentsDigitTest {
         "8, abcdefg",
         "9, abcdfg",
     )
-    fun `accepts a digit to create segments`(digit: Int, segments: String) {
+    fun `accepts a digit to create the default signal`(digit: Int, segments: String) {
         assertThat(
-            SegmentsDigit(Digit(digit))
+            Signal(Digit(digit))
         ).isEqualTo(
-            SegmentsDigit(segments)
+            Signal(segments)
         )
     }
 
@@ -42,15 +42,7 @@ class SegmentsDigitTest {
     @ValueSource(strings = ["h", "A", "abJ"])
     fun `throws when segments contain something other than a,b,c,d,e,f,g`(segments: String) {
         assertThrows<IllegalArgumentException> {
-            SegmentsDigit(segments)
-        }
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = ["aa", "aba", "acc"])
-    fun `throws when segments contain duplicates`(segments: String) {
-        assertThrows<IllegalArgumentException> {
-            SegmentsDigit(segments)
+            Signal(segments)
         }
     }
 }

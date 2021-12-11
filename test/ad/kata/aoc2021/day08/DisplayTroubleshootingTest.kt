@@ -3,47 +3,37 @@ package ad.kata.aoc2021.day08
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.ValueSource
+import org.junit.jupiter.params.provider.CsvSource
 
 class DisplayTroubleshootingTest {
 
     @ParameterizedTest
-    @ValueSource(strings = ["ab", "gc", "cg", "ca", "fg"])
-    fun `can identify 1 due to its unique number of segments (2)`(segments: String) {
+    @CsvSource(
+        "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf | 5353",
+        "be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe | 8394",
+        "edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc | 9781",
+        "fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg | 1197",
+        "fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb | 9361",
+        "aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf bgf bfgea | 4873",
+        "fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb | 8418",
+        "dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe | 4548",
+        "bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef | 1625",
+        "egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb | 8717",
+        "gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce | 4315",
+        delimiter = '|'
+    )
+    fun `can deduce output value from unique signals`(
+        uniqueSignals: String,
+        outputSignals: String,
+        expectedOutputValue: Int
+    ) {
         assertThat(
-            entryOf(outputValues = segments).identifiedDigits()
-        ).containsExactly(
-            Digit(1)
-        )
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = ["bcdf", "gcbe", "gecf", "ecba", "cefg"])
-    fun `can identify 4 due to its unique number of segments (4)`(segments: String) {
-        assertThat(
-            entryOf(outputValues = segments).identifiedDigits()
-        ).containsExactly(
-            Digit(4)
-        )
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = ["acf", "cgb", "cbg", "bgf"])
-    fun `can identify 7 due to its unique number of segments (3)`(segments: String) {
-        assertThat(
-            entryOf(outputValues = segments).identifiedDigits()
-        ).containsExactly(
-            Digit(7)
-        )
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = ["abcdefg", "dgebacf", "egdcabf", "gebdcfa", "fadegcb", "gbcadfe", "gbdfcae"])
-    fun `can identify 8 due to its unique number of segments (7)`(segments: String) {
-        assertThat(
-            entryOf(outputValues = segments).identifiedDigits()
-        ).containsExactly(
-            Digit(8)
+            entryOf(
+                uniqueSignals = uniqueSignals,
+                outputSignals = outputSignals
+            ).deduceOutputValue()
+        ).isEqualTo(
+            expectedOutputValue
         )
     }
 
@@ -52,75 +42,102 @@ class DisplayTroubleshootingTest {
         assertThat(
             troubleShootingFromInput("day08.input-sample").entries
         ).containsExactly(
-            TroubleshootingEntry(
-                uniqueSignalPatterns = listOfSegments("be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb"),
-                outputValues = listOfSegments("fdgacbe cefdb cefbgd gcbe")
+            entryOf(
+                uniqueSignals = "be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb",
+                outputSignals = "fdgacbe cefdb cefbgd gcbe"
             ),
-            TroubleshootingEntry(
-                uniqueSignalPatterns = listOfSegments("edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec"),
-                outputValues = listOfSegments("fcgedb cgb dgebacf gc")
+            entryOf(
+                uniqueSignals = "edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec",
+                outputSignals = "fcgedb cgb dgebacf gc"
             ),
-            TroubleshootingEntry(
-                uniqueSignalPatterns = listOfSegments("fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef"),
-                outputValues = listOfSegments("cg cg fdcagb cbg")
+            entryOf(
+                uniqueSignals = "fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef",
+                outputSignals = "cg cg fdcagb cbg"
             ),
-            TroubleshootingEntry(
-                uniqueSignalPatterns = listOfSegments("fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega"),
-                outputValues = listOfSegments("efabcd cedba gadfec cb")
+            entryOf(
+                uniqueSignals = "fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega",
+                outputSignals = "efabcd cedba gadfec cb"
             ),
-            TroubleshootingEntry(
-                uniqueSignalPatterns = listOfSegments("aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga"),
-                outputValues = listOfSegments("gecf egdcabf bgf bfgea")
+            entryOf(
+                uniqueSignals = "aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga",
+                outputSignals = "gecf egdcabf bgf bfgea"
             ),
-            TroubleshootingEntry(
-                uniqueSignalPatterns = listOfSegments("fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf"),
-                outputValues = listOfSegments("gebdcfa ecba ca fadegcb")
+            entryOf(
+                uniqueSignals = "fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf",
+                outputSignals = "gebdcfa ecba ca fadegcb"
             ),
-            TroubleshootingEntry(
-                uniqueSignalPatterns = listOfSegments("dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf"),
-                outputValues = listOfSegments("cefg dcbef fcge gbcadfe")
+            entryOf(
+                uniqueSignals = "dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf",
+                outputSignals = "cefg dcbef fcge gbcadfe"
             ),
-            TroubleshootingEntry(
-                uniqueSignalPatterns = listOfSegments("bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd"),
-                outputValues = listOfSegments("ed bcgafe cdgba cbgef")
+            entryOf(
+                uniqueSignals = "bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd",
+                outputSignals = "ed bcgafe cdgba cbgef"
             ),
-            TroubleshootingEntry(
-                uniqueSignalPatterns = listOfSegments("egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg"),
-                outputValues = listOfSegments("gbdfcae bgc cg cgb")
+            entryOf(
+                uniqueSignals = "egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg",
+                outputSignals = "gbdfcae bgc cg cgb"
             ),
-            TroubleshootingEntry(
-                uniqueSignalPatterns = listOfSegments("gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc"),
-                outputValues = listOfSegments("fgae cfgab fg bagce")
+            entryOf(
+                uniqueSignals = "gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc",
+                outputSignals = "fgae cfgab fg bagce"
             ),
         )
     }
 
     @Test
-    fun `digits 1,4,7,8 appear 26 times in the output values of the sample data`() {
+    fun `sum of output values of the sample data is 61229`() {
         assertThat(
             DisplayTroubleshooting(
-                entryOf(outputValues = "fdgacbe cefdb cefbgd gcbe"),
-                entryOf(outputValues = "fcgedb cgb dgebacf gc"),
-                entryOf(outputValues = "cg cg fdcagb cbg"),
-                entryOf(outputValues = "efabcd cedba gadfec cb"),
-                entryOf(outputValues = "gecf egdcabf bgf bfgea"),
-                entryOf(outputValues = "gebdcfa ecba ca fadegcb"),
-                entryOf(outputValues = "cefg dcbef fcge gbcadfe"),
-                entryOf(outputValues = "ed bcgafe cdgba cbgef"),
-                entryOf(outputValues = "gbdfcae bgc cg cgb"),
-                entryOf(outputValues = "fgae cfgab fg bagce"),
-            ).identifiedOutputDigits().count()
+                entryOf(
+                    uniqueSignals = "be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb",
+                    outputSignals = "fdgacbe cefdb cefbgd gcbe"
+                ),
+                entryOf(
+                    uniqueSignals = "edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec",
+                    outputSignals = "fcgedb cgb dgebacf gc"
+                ),
+                entryOf(
+                    uniqueSignals = "fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef",
+                    outputSignals = "cg cg fdcagb cbg"
+                ),
+                entryOf(
+                    uniqueSignals = "fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega",
+                    outputSignals = "efabcd cedba gadfec cb"
+                ),
+                entryOf(
+                    uniqueSignals = "aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga",
+                    outputSignals = "gecf egdcabf bgf bfgea"
+                ),
+                entryOf(
+                    uniqueSignals = "fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf",
+                    outputSignals = "gebdcfa ecba ca fadegcb"
+                ),
+                entryOf(
+                    uniqueSignals = "dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf",
+                    outputSignals = "cefg dcbef fcge gbcadfe"
+                ),
+                entryOf(
+                    uniqueSignals = "bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd",
+                    outputSignals = "ed bcgafe cdgba cbgef"
+                ),
+                entryOf(
+                    uniqueSignals = "egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg",
+                    outputSignals = "gbdfcae bgc cg cgb"
+                ),
+                entryOf(
+                    uniqueSignals = "gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc",
+                    outputSignals = "fgae cfgab fg bagce"
+                )
+            ).deducedOutputValues().filterNotNull().sum()
         ).isEqualTo(
-            26
+            61229
         )
     }
 }
 
-private fun listOfSegments(segments: String) =
-    segments.split(' ').map { SegmentsDigit(it) }
-
-private fun entryOf(uniqueSignalPatterns: String = "", outputValues: String = "") =
+private fun entryOf(uniqueSignals: String = "", outputSignals: String) =
     TroubleshootingEntry(
-        uniqueSignalPatterns = listOfSegments(uniqueSignalPatterns),
-        outputValues = listOfSegments(outputValues)
+        uniqueSignals = listOfSignals(uniqueSignals),
+        outputSignals = listOfSignals(outputSignals)
     )

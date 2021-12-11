@@ -1,7 +1,7 @@
 package ad.kata.aoc2021.day08
 
 /**
- * Seven-segment Displays Digits
+ * Seven-segment Display default Signal-Patterns
  *
  *   0:      1:      2:      3:      4:
  *  aaaa    ....    aaaa    aaaa    ....
@@ -21,13 +21,13 @@ package ad.kata.aoc2021.day08
  * .    f  e    f  .    f  e    f  .    f
  *  gggg    gggg    ....    gggg    gggg
  */
-@JvmInline
-value class SegmentsDigit(private val signal: String) {
+data class Signal(val segments: Set<Char>) {
 
     init {
-        require(signal.all { it in 'a'..'g' })
-        require(signal.pairwiseDistinct())
+        require(segments.all { it in 'a'..'g' })
     }
+
+    constructor(segments: String) : this(segments.toCharArray().toHashSet())
 
     constructor(digit: Digit) : this(
         when (digit.value) {
@@ -44,15 +44,6 @@ value class SegmentsDigit(private val signal: String) {
         }
     )
 
-    fun count() = signal.length
+    val segmentsCount = segments.size
 }
 
-@JvmInline
-value class Digit(val value: Int) {
-
-    init {
-        require(value in 0..9)
-    }
-}
-
-private fun String.pairwiseDistinct() = toCharArray().distinct().count() == length
