@@ -20,6 +20,9 @@ data class Matrix<T>(private val items: List<List<T>>) {
 }
 
 data class Dimension(val rows: Int, val cols: Int)
-data class Coordinate(val rowIndex: Int, val colIndex: Int)
+
+data class Coordinate(val rowIndex: Int, val colIndex: Int) {
+    override fun toString() = "($rowIndex, $colIndex)"
+}
 
 fun <T> List<List<T>>.toMatrix() = Matrix(this)

@@ -1,6 +1,7 @@
 package ad.kata.aoc2021.day09
 
 import ad.kata.aoc2021.parseList
+import ad.kata.aoc2021.types.Coordinate
 import ad.kata.aoc2021.types.Matrix
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -31,7 +32,7 @@ class HeightmapTest {
         assertThat(
             heightmapOf(
                 *heightmap.split('|').toTypedArray()
-            ).lowPoints()
+            ).lowPoints().values
         ).containsExactlyInAnyOrderElementsOf(
             expectedLowPoints.parseList { Height(it.toInt()) }
         )
@@ -60,7 +61,7 @@ class HeightmapTest {
     }
 
     @Test
-    fun `sample matrix has low points 1, 0, 5, and 5`() {
+    fun `sample height map has low points 1, 0, 5, and 5`() {
         assertThat(
             heightmapOf(
                 "2199943210",
@@ -69,8 +70,13 @@ class HeightmapTest {
                 "8767896789",
                 "9899965678"
             ).lowPoints()
-        ).containsExactlyInAnyOrder(
-            Height(1), Height(0), Height(5), Height(5)
+        ).containsExactlyEntriesOf(
+            mapOf(
+                Coordinate(1, 0) to Height(1),
+                Coordinate(9, 0) to Height(0),
+                Coordinate(2, 2) to Height(5),
+                Coordinate(6, 4) to Height(5),
+            )
         )
     }
 }

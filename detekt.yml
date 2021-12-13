@@ -115,7 +115,7 @@ complexity:
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
   LongMethod:
     active: true
-    threshold: 10 # DIFFERENT FROM DEFAULT (60)
+    threshold: 11 # DIFFERENT FROM DEFAULT (60)
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
   LongParameterList:
     active: true

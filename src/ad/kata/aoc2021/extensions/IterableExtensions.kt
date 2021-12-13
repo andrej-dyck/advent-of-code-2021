@@ -1,7 +1,7 @@
 package ad.kata.aoc2021.extensions
 
 @Suppress("LongMethod", "NestedBlockDepth") // for performance reasons
-fun <T: Comparable<T>> Iterable<T>.minMaxOrNull(): Pair<T,T>? {
+fun <T : Comparable<T>> Iterable<T>.minMaxOrNull(): Pair<T, T>? {
     if (none()) return null
 
     val iterator = iterator()
@@ -15,3 +15,5 @@ fun <T: Comparable<T>> Iterable<T>.minMaxOrNull(): Pair<T,T>? {
 
     return minValue to maxValue
 }
+
+fun Iterable<Int>.product(): Long = fold(1L, Long::times)
