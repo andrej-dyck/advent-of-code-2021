@@ -61,8 +61,37 @@ class ParsedLineTest {
             corruptLineOf(line, unexpectedBracket)
         )
     }
+
+    @ParameterizedTest
+    @CsvSource(
+        "(; )",
+        "[; ]",
+        "{; }",
+        "<; >",
+        "<({[; ]})>",
+        "[({(<(())[]>[[{[]{<()<>>; }}]])})]",
+        "[(()[<>])]({[<{<<[]>>(; )}>]})",
+        "(((({<>}<{<{<>}{[]{[]{}; }}>}>))))",
+        "{<[[]]>}<{[{[{[]{()[[[]; ]]}}]}]}>",
+        "<{([{{}}[<[[[<>{}]]]>[]]; ])}>",
+        delimiter = ';'
+    )
+    fun `incomplete lines are lines that have missing closing brackets`(
+        line: String,
+        missingClosings: String
+    ) {
+        assertThat(
+            NavigationLine(line).parse()
+        ).isEqualTo(
+            incompleteLineOf(line, missingClosings)
+        )
+    }
 }
 
 internal fun validLineOf(line: String) = ValidLine(NavigationLine(line))
+
 internal fun corruptLineOf(line: String, unexpectedBracket: Char) =
     CorruptLine(NavigationLine(line), unexpectedBracket)
+
+internal fun incompleteLineOf(line: String, missingClosings: String) =
+    IncompleteLine(NavigationLine(line), missingClosings)

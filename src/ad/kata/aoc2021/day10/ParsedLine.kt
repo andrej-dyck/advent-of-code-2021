@@ -6,6 +6,13 @@ sealed interface ParsedLine {
     val line: NavigationLine
 }
 
+data class ValidLine(override val line: NavigationLine) : ParsedLine
+data class CorruptLine(override val line: NavigationLine, val unexpectedChar: Char) : ParsedLine
+data class IncompleteLine(
+    override val line: NavigationLine,
+    val missingClosings: String
+) : ParsedLine
+
 fun NavigationLine.parse() = parseLine(index = 0)
 
 private tailrec fun NavigationLine.parseLine(
@@ -25,8 +32,4 @@ private tailrec fun NavigationLine.parseLine(
 
 private fun NavigationLine.validOrIncomplete(expectedClosing: List<Char>) =
     if (expectedClosing.none()) ValidLine(this)
-    else IncompleteLine(this)
-
-data class ValidLine(override val line: NavigationLine) : ParsedLine
-data class CorruptLine(override val line: NavigationLine, val unexpectedChar: Char) : ParsedLine
-data class IncompleteLine(override val line: NavigationLine) : ParsedLine
+    else IncompleteLine(this, missingClosings = expectedClosing.reversed().joinToString(""))

@@ -16,12 +16,12 @@ class SyntaxCheckerScoreTest {
     )
     fun `has following syntax error score for unexpected chars in corrupt lines`(
         corruptLine: String,
-        score: Int
+        expectedScore: Long
     ) {
         assertThat(
             syntaxCheckerScoreOf(corruptLine).total()
         ).isEqualTo(
-            score
+            Score(expectedScore)
         )
     }
 
@@ -38,18 +38,30 @@ class SyntaxCheckerScoreTest {
         "(>^(}, 26334",
         "(>^(>, 50274",
     )
-    fun `adds scores for each line`(corruptLines: String, totalScore: Int) {
+    fun `adds scores for each line`(corruptLines: String, expectedScore: Long) {
         assertThat(
             syntaxCheckerScoreOf(
                 *corruptLines.split('^').toTypedArray()
             ).total()
         ).isEqualTo(
-            totalScore
+            Score(expectedScore)
         )
     }
 
     @Test
-    fun `corrupt lines of sample input have a sore of 26397`() {
+    fun `score is 0 for valid lines`() {
+        assertThat(syntaxCheckerScoreOf("()").total())
+            .isEqualTo(Score.Zero)
+    }
+
+    @Test
+    fun `score is 0 for incomplete lines`() {
+        assertThat(syntaxCheckerScoreOf("(").total())
+            .isEqualTo(Score.Zero)
+    }
+
+    @Test
+    fun `corrupt lines of sample input have a total sore of 26397`() {
         assertThat(
             syntaxCheckerScoreOf(
                 "{([(<{}[<>[]}>{[]{[(<()>",
@@ -59,7 +71,7 @@ class SyntaxCheckerScoreTest {
                 "<{([([[(<>()){}]>(<<{{"
             ).total()
         ).isEqualTo(
-            26397
+            Score(points = 26397)
         )
     }
 }

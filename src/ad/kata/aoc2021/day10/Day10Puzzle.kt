@@ -7,4 +7,7 @@ fun main() {
     /* part 1 */
     val totalSyntaxCheckerScore = SyntaxCheckerScore(navigationProgram).total()
     println("Total syntax checker score: $totalSyntaxCheckerScore")
+    /* part 2 */
+    val winningAutocompleteScore = AutocompleteScore(navigationProgram).winner()
+    println("Winning autocomplete score: $winningAutocompleteScore")
 }

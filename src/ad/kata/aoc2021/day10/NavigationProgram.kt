@@ -10,6 +10,7 @@ class NavigationProgram(val lines: Sequence<NavigationLine>) {
 }
 
 fun NavigationProgram.corruptedLines() = parsedLines.filterIsInstance<CorruptLine>()
+fun NavigationProgram.incompleteLines() = parsedLines.filterIsInstance<IncompleteLine>()
 
 fun navigationProgramFromInput(filename: String) = NavigationProgram(
     PuzzleInput(filename).lines().map { NavigationLine(it) }

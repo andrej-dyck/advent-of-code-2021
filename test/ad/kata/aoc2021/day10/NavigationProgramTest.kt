@@ -85,5 +85,29 @@ class NavigationProgramTest {
             corruptLineOf("<{([([[(<>()){}]>(<<{{", unexpectedBracket = '>'),
         )
     }
+
+    @Test
+    fun `sample navigation program has 5 incomplete lines`() {
+        assertThatSeq(
+            NavigationProgram(
+                "[({(<(())[]>[[{[]{<()<>>",
+                "[(()[<>])]({[<{<<[]>>(",
+                "{([(<{}[<>[]}>{[]{[(<()>",
+                "(((({<>}<{<{<>}{[]{[]{}",
+                "[[<[([]))<([[{}[[()]]]",
+                "[{[{({}]{}}([{[{{{}}([]",
+                "{<[[]]>}<{[{[{[]{()[[[]",
+                "[<(<(<(<{}))><([]([]()",
+                "<{([([[(<>()){}]>(<<{{",
+                "<{([{{}}[<[[[<>{}]]]>[]]",
+            ).incompleteLines()
+        ).containsExactly(
+            incompleteLineOf("[({(<(())[]>[[{[]{<()<>>", missingClosings = "}}]])})]"),
+            incompleteLineOf("[(()[<>])]({[<{<<[]>>(", missingClosings = ")}>]})"),
+            incompleteLineOf("(((({<>}<{<{<>}{[]{[]{}", missingClosings = "}}>}>))))"),
+            incompleteLineOf("{<[[]]>}<{[{[{[]{()[[[]", missingClosings = "]]}}]}]}>"),
+            incompleteLineOf("<{([{{}}[<[[[<>{}]]]>[]]", missingClosings = "])}>"),
+        )
+    }
 }
 
