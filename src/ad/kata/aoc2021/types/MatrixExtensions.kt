@@ -10,7 +10,7 @@ operator fun Coordinate.plus(other: Pair<Int, Int>) =
 
 fun <T> Matrix<T>.transposed() = toListOfLists().transposed()
 
-fun <T, R> Matrix<T>.mapIndexed(transform: (Coordinate, value: T) -> R) =
+fun <T, R> Matrix<T>.mapIndexed(transform: (Coordinate, T) -> R) =
     toListOfLists().mapIndexed { colIndex, c ->
         c.mapIndexed { rowIndex, item -> transform(Coordinate(rowIndex, colIndex), item) }
     }.toMatrix()
@@ -29,8 +29,7 @@ fun <T> Matrix<T>.filterIndexed(predicate: (Coordinate, value: T) -> Boolean) =
 
 fun <T> Matrix<T>.flatten() = toListOfLists().flatten()
 
-inline fun <K, V> Map<K, V>.firstEntryOrNull(predicate: (Map.Entry<K, V>) -> Boolean) =
-    entries.firstOrNull(predicate)
+inline fun <T> Matrix<T>.all(predicate: (T) -> Boolean) = flatten().all(predicate)
 
 fun <T> Matrix<T>.adjacentItemsOf(c: Coordinate, vectors: Set<Pair<Int, Int>> = adjacencyVectors) =
     vectors.map { c + it }

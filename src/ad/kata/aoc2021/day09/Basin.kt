@@ -1,7 +1,6 @@
 package ad.kata.aoc2021.day09
 
 import ad.kata.aoc2021.types.Coordinate
-import ad.kata.aoc2021.types.firstEntryOrNull
 
 fun Heightmap.basins() =
     lowPoints().map { locateBasinAt(it.key, it.value) }
@@ -23,6 +22,9 @@ private fun Heightmap.locateBasin(
             locateBasin(basin + basinNeighbors, checkedLocations + l.key)
         }
     }
+
+private inline fun <K, V> Map<K, V>.firstEntryOrNull(predicate: (Map.Entry<K, V>) -> Boolean) =
+    entries.firstOrNull(predicate)
 
 fun List<Basin>.takeLargest(n: Int) =
     asSequence().sortedByDescending { it.size }.take(n).toList()

@@ -37,6 +37,11 @@ class Octopuses(val energyLevels: Matrix<EnergyLevel>) {
 fun Octopuses.totalFlashesAfter(steps: Int) =
     timeProjection().take(steps).sumOf { it.countFlashes() }
 
+fun Octopuses.firstFlashSync() =
+    timeProjection().indexOfFirst(Octopuses::allFlash) + 1
+
+fun Octopuses.allFlash() = energyLevels.all { it.hasFlashed() }
+
 fun octopusesFromInput(filename: String) = Octopuses(
     PuzzleInput(filename).lines()
         .map { it.toCharArray().map(Char::digitToInt) }

@@ -174,6 +174,29 @@ class OctopusesTest {
         )
     }
 
+    @ParameterizedTest
+    @CsvSource(
+        "[1]; 9",
+        "[9]; 1",
+        "[11]; 9",
+        "[99]; 1",
+        "[988]; 1",
+        "[5877,8877,7777]; 2",
+        delimiter = ';'
+    )
+    fun `finds the N-th step where all octopuses steps`(
+        energyLevels: String,
+        expectedNumberOfSteps: Int
+    ) {
+        assertThat(
+            Octopuses(
+                energyLevelsOf(energyLevels.parseStringList())
+            ).firstFlashSync()
+        ).isEqualTo(
+            expectedNumberOfSteps
+        )
+    }
+
     @Test
     fun `reads octopuses energy levels from input`() {
         assertThat(
@@ -332,6 +355,28 @@ class OctopusesTest {
                 "0532250600",
                 "0032240000",
             ),
+        )
+    }
+
+    @Test
+    fun `all octopuses flash simultaneously after 195 steps for sample input`() {
+        assertThat(
+            Octopuses(
+                energyLevelsOf(
+                    "5483143223",
+                    "2745854711",
+                    "5264556173",
+                    "6141336146",
+                    "6357385478",
+                    "4167524645",
+                    "2176841721",
+                    "6882881134",
+                    "4846848554",
+                    "5283751526",
+                )
+            ).firstFlashSync()
+        ).isEqualTo(
+            195
         )
     }
 }
