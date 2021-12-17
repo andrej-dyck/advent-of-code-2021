@@ -15,6 +15,9 @@ fun <T, R> Matrix<T>.mapIndexed(transform: (Coordinate, value: T) -> R) =
         c.mapIndexed { rowIndex, item -> transform(Coordinate(rowIndex, colIndex), item) }
     }.toMatrix()
 
+fun <T, R> Matrix<T>.map(transform: (value: T) -> R) =
+    toListOfLists().map { c -> c.map { item -> transform(item) } }.toMatrix()
+
 fun <T> Matrix<T>.filterIndexed(predicate: (Coordinate, value: T) -> Boolean) =
     toListOfLists().flatMapIndexed { colIndex, c ->
         c.withIndex().filter { item ->
@@ -28,3 +31,11 @@ fun <T> Matrix<T>.flatten() = toListOfLists().flatten()
 
 inline fun <K, V> Map<K, V>.firstEntryOrNull(predicate: (Map.Entry<K, V>) -> Boolean) =
     entries.firstOrNull(predicate)
+
+fun <T> Matrix<T>.adjacentItemsOf(c: Coordinate, vectors: Set<Pair<Int, Int>> = adjacencyVectors) =
+    vectors.map { c + it }
+        .mapNotNull { c -> valueAt(c)?.let { c to it } }
+        .toMap()
+
+private val adjacencyVectors =
+    setOf(-1 to -1, 0 to -1, 1 to -1, -1 to 0, 1 to 0, -1 to 1, 0 to 1, 1 to 1)

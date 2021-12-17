@@ -1,7 +1,6 @@
 package ad.kata.aoc2021.day09
 
 import ad.kata.aoc2021.PuzzleInput
-import ad.kata.aoc2021.extensions.filterNotNullValues
 import ad.kata.aoc2021.types.*
 
 class Heightmap(val heights: Matrix<Height>) {
@@ -14,10 +13,7 @@ class Heightmap(val heights: Matrix<Height>) {
         otherHeights.all { it > this }
 
     internal fun neighborsOf(location: Coordinate) =
-        neighborhoodVectors
-            .map { location + it }
-            .associateWith { heights.valueAt(it) }
-            .filterNotNullValues()
+        heights.adjacentItemsOf(location, neighborhoodVectors)
 
     companion object {
         private val neighborhoodVectors = setOf(1 to 0, 0 to 1, -1 to 0, 0 to -1)
@@ -37,6 +33,5 @@ value class Height(val unit: Int) : Comparable<Height> {
 fun heightmapFromInput(filename: String) = Heightmap(
     PuzzleInput(filename).lines()
         .map { l -> l.toCharArray().map { Height(it.digitToInt()) } }
-        .toList()
         .toMatrix()
 )

@@ -17,6 +17,8 @@ data class Matrix<T>(private val items: List<List<T>>) {
 
     private fun <T> List<List<T>>.allRowsEqualInSize() =
         headTail().let { (h, t) -> h == null || t.all { it.size == h.size } }
+
+    override fun toString() = "Matrix($items)"
 }
 
 data class Dimension(val rows: Int, val cols: Int)
@@ -26,3 +28,4 @@ data class Coordinate(val rowIndex: Int, val colIndex: Int) {
 }
 
 fun <T> List<List<T>>.toMatrix() = Matrix(this)
+fun <T> Sequence<List<T>>.toMatrix() = Matrix(this.toList())
