@@ -32,5 +32,8 @@ private fun <T> String.parseVector(transform: (List<String>) -> T) =
 fun String.parseIntPair() =
     parseVector { (i1, i2) -> i1.toInt() to i2.toInt() }
 
+fun String.parsePair() =
+    parseVector { (i1, i2) -> i1 to i2 }
+
 fun String.parseIntTriple() =
     parseVector { (i1, i2, i3) -> Triple(i1.toInt(), i2.toInt(), i3.toInt()) }

@@ -4,19 +4,19 @@ import ad.kata.aoc2021.extensions.toMapMerging
 
 data class Graph<T>(private val edges: Map<T, Set<T>>) {
 
-    fun distinctPaths(from: T, to: T, canRevisit: (T) -> Boolean = { false }) =
-        findPaths(from, to, canRevisit)
+    fun distinctPaths(from: T, to: T, canRevisit: (T, Path<T>) -> Boolean = { _, _ -> false }) =
+        findPaths(from, to, canRevisit = { n, p -> canRevisit(n, p) && n != from })
 
     private fun findPaths(
         from: T,
         to: T,
-        canRevisit: (T) -> Boolean,
-        path: Path<T> = listOf(from)
+        path: Path<T> = listOf(from),
+        canRevisit: (T, Path<T>) -> Boolean
     ): Paths<T> {
         if (from == to) return setOf(path)
 
-        val neighbors = adjacentNodesOf(from) - path.filterNot(canRevisit).toSet()
-        return neighbors.flatMap { n -> findPaths(n, to, canRevisit, path + n) }.toHashSet()
+        val neighbors = adjacentNodesOf(from) - path.filterNot { canRevisit(it, path) }.toSet()
+        return neighbors.flatMap { n -> findPaths(n, to, path + n, canRevisit) }.toHashSet()
     }
 
     private fun adjacentNodesOf(node: T) = edges[node] ?: emptySet()

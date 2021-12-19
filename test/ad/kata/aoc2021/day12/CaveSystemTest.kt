@@ -23,7 +23,7 @@ class CaveSystemTest {
         expectedDistinctPaths: String
     ) {
         assertThat(
-            caveSystemOf(caveSystem).distinctPaths()
+            caveSystemOf(caveSystem).findPaths()
         ).containsExactlyInAnyOrderElementsOf(
             expectedDistinctPaths.parseDistinctPaths()
         )
@@ -40,7 +40,7 @@ class CaveSystemTest {
         expectedDistinctPaths: String
     ) {
         assertThat(
-            caveSystemOf(caveSystem).distinctPaths()
+            caveSystemOf(caveSystem).findPaths()
         ).containsExactlyInAnyOrderElementsOf(
             expectedDistinctPaths.parseDistinctPaths()
         )
@@ -59,7 +59,41 @@ class CaveSystemTest {
         expectedNumberOfDistinctPaths: Int
     ) {
         assertThat(
-            caveSystemOf(caveSystem).distinctPaths()
+            caveSystemOf(caveSystem).findPaths()
+        ).hasSize(
+            expectedNumberOfDistinctPaths
+        )
+    }
+
+    @Test
+    fun `paths can visit one small cave twice with enough time`() {
+        assertThat(
+            caveSystemOf("start-a-end,start-b-end,a-b")
+                .findPathsWithSlightlyMoreTime()
+        ).containsExactlyInAnyOrder(
+            "[start,a,end]".parseList { Cave(it) },
+            "[start,b,end]".parseList { Cave(it) },
+            "[start,a,b,end]".parseList { Cave(it) },
+            "[start,b,a,end]".parseList { Cave(it) },
+            "[start,a,b,a,end]".parseList { Cave(it) },
+            "[start,b,a,b,end]".parseList { Cave(it) },
+        )
+    }
+
+    @Suppress("MaxLineLength")
+    @ParameterizedTest
+    @CsvSource(
+        "start-A-end,start-b-end,A-b,A-c,b-d; 36",
+        "dc-end,HN-start,start-kj,dc-start,dc-HN,LN-dc,HN-end,kj-sa,kj-HN,kj-dc; 103",
+        "fs-end,he-DX,fs-he,start-DX,pj-DX,end-zg,zg-sl,zg-pj,pj-he,RW-he,fs-DX,pj-RW,zg-RW,start-pj,he-WI,zg-he,pj-fs,start-RW; 3509",
+        delimiter = ';'
+    )
+    fun `finds all distinct paths through the cave system where large caves can be visited multiple times and a small cave twice`(
+        caveSystem: String,
+        expectedNumberOfDistinctPaths: Int
+    ) {
+        assertThat(
+            caveSystemOf(caveSystem).findPathsWithSlightlyMoreTime()
         ).hasSize(
             expectedNumberOfDistinctPaths
         )

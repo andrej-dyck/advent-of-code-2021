@@ -5,6 +5,9 @@ fun main() {
 
     println("-- Passage Pathing --")
     /* part 1 */
-    val numberOfDistinctPaths = caveSystem.distinctPaths().size
+    val numberOfDistinctPaths = caveSystem.findPaths().size
     println("number of distinct paths through the cave system: $numberOfDistinctPaths")
+    /* part 2 */
+    val numberOfPathsWithMoreTime = caveSystem.findPathsWithSlightlyMoreTime().size
+    println("number of distinct paths with one small cave visited twice: $numberOfPathsWithMoreTime")
 }
