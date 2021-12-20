@@ -12,3 +12,14 @@ data class Dot(val x: Int, val y: Int) {
 
 fun Pair<Int, Int>.toDot() = Dot(first, second)
 fun String.toDot() = split(',').let { (x, y) -> Dot(x.toInt(), y.toInt()) }
+
+fun Paper.formattedString(width: Int = 1): String {
+    val xs = dots.maxOfOrNull { it.x } ?: 0
+    val ys = dots.maxOfOrNull { it.y } ?: 0
+
+    return (0..ys).joinToString("\n") { y ->
+        (0..xs).joinToString("") { x ->
+            if (Dot(x, y) in dots) "#".repeat(width) else ".".repeat(width)
+        }
+    }
+}

@@ -52,6 +52,38 @@ class OrigamiTest {
     }
 
     @Test
+    fun `presents final folded paper as a formatted string`() {
+        assertThat(
+            Origami(
+                paperOfDots(
+                    "...#..#..#.",
+                    "....#......",
+                    "...........",
+                    "#..........",
+                    "...#....#.#",
+                    "...........",
+                    "...........",
+                    "...........",
+                    "...........",
+                    "...........",
+                    ".#....#.##.",
+                    "....#......",
+                    "......#...#",
+                    "#..........",
+                    "#.#........",
+                ),
+                sequenceOf(FoldUp(y = 7), FoldLeft(x = 5))
+            ).finalFold()?.formattedString()?.lines()
+        ).containsExactly(
+            "#####",
+            "#...#",
+            "#...#",
+            "#...#",
+            "#####",
+        )
+    }
+
+    @Test
     fun `reads paper with dots from input`() {
         assertThat(
             origamiFromInput("day13.input-sample").paper
