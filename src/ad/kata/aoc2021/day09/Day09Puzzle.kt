@@ -5,7 +5,7 @@ import ad.kata.aoc2021.extensions.product
 fun main() {
     val heightmap = heightmapFromInput("day09.input")
 
-    println("-- Smoke Basin Risk Assessment --")
+    println("-- Day 9: Smoke Basin --")
     /* part 1 */
     val smokeRiskLevels = heightmap.assessSmokeRiskLevels()
     println("Total risk level of smoke at low points: ${smokeRiskLevels.total()}")

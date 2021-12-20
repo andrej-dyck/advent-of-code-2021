@@ -46,7 +46,7 @@ tasks.register("prepPuzzle") {
             package ad.kata.aoc2021.day$dayNumber
 
             fun main() {
-                println("-- Day $dayNumber Puzzle --")
+                println("-- Day $dayNumber: Puzzle --")
                 /* part 1 */
                 println("TODO")
             }

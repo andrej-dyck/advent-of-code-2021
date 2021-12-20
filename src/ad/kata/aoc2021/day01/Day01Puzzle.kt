@@ -5,7 +5,7 @@ fun main() {
         sonarSweepReportFromInput("day01.input")
     )
 
-    println("-- Sonar Sweep --")
+    println("-- Day 1: Sonar Sweep --")
     /* part 1 */
     println("number of total depth measurement increases: ${depthAnalysis.totalIncreases()}")
     /* part 2 */
