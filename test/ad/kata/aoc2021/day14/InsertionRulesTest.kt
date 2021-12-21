@@ -51,15 +51,6 @@ class InsertionRulesTest {
             Polymer("ABCD")
         )
     }
-
-    @Test
-    fun `does not change polymer when template is only 1 element in size`() {
-        assertThat(
-            insertionRulesOf("AA" to 'C').pairInsertionOn(Polymer("A"))
-        ).isEqualTo(
-            Polymer("A")
-        )
-    }
 }
 
 internal fun insertionRulesOf(vararg rules: Pair<String, Char>) =

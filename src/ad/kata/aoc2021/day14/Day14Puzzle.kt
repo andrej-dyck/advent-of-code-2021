@@ -4,8 +4,9 @@ fun main() {
     val polymerization = polymerizationFromInput("day14.input")
 
     println("-- Day 14: Extended Polymerization --")
-    /* part 1 */
-    val polymerAfter10Steps = polymerization.processResults().take(10).last()
-    val diffInElements = polymerAfter10Steps.differenceOfMostAndLeastCommonElement()
-    println("Difference between most and least common elements (after 10 steps): $diffInElements")
+    listOf(10, /* part 1 */ 40 /* part 2 */).forEach { steps ->
+        val finalPolymer = polymerization.resultAfter(steps)
+        val diffInElements = finalPolymer.differenceOfMostAndLeastCommonElement()
+        println("Difference between most and least common elements (after $steps steps): $diffInElements")
+    }
 }

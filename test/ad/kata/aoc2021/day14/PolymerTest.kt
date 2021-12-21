@@ -3,14 +3,41 @@ package ad.kata.aoc2021.day14
 import ad.kata.aoc2021.extensions.splitTrim
 import ad.kata.aoc2021.parseSequence
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.junit.jupiter.params.provider.ValueSource
 
 class PolymerTest {
 
     @ParameterizedTest
+    @ValueSource(strings = ["", "N"])
+    fun `polymer templates of size 0 or 1 are not allowed`(template: String) {
+        assertThrows<IllegalArgumentException> {
+            Polymer(template)
+        }
+    }
+
+    @ParameterizedTest
     @CsvSource(
-        "N, N:1",
+        "NC, 2",
+        "NCB, 3",
+        "NN, 2",
+        "NNNNN, 5",
+        "NNCB, 4",
+        "NCNBCHB, 7",
+        "NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB, 49",
+    )
+    fun `can tell the length of the polymer`(template: String, expectedLength: Long) {
+        assertThat(
+            Polymer(template).length()
+        ).isEqualTo(
+            expectedLength
+        )
+    }
+
+    @ParameterizedTest
+    @CsvSource(
         "NN, N:2",
         "NNNNN, N:5",
         "NNCB, N:2^B:1^C:1",
@@ -27,7 +54,6 @@ class PolymerTest {
 
     @ParameterizedTest
     @CsvSource(
-        "N, 0",
         "NN, 0",
         "NB, 0",
         "NBB, 1",
@@ -39,7 +65,7 @@ class PolymerTest {
     )
     fun `can tell the difference between most and least common element`(
         template: String,
-        expectedDifference: Int
+        expectedDifference: Long
     ) {
         assertThat(
             Polymer(template).differenceOfMostAndLeastCommonElement()
@@ -51,4 +77,4 @@ class PolymerTest {
 
 private fun String.parseCountMap() =
     parseSequence { it.splitTrim(":") }
-        .associate { (e, c) -> Element(e.first()) to c.toInt() }
+        .associate { (e, c) -> Element(e.first()) to c.toLong() }

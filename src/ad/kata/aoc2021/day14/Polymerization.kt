@@ -10,6 +10,8 @@ class Polymerization(val template: Polymer, val insertionRules: InsertionRules) 
         generateSequence(template) { insertionRules.pairInsertionOn(it) }.drop(1)
 }
 
+fun Polymerization.resultAfter(steps: Int) = processResults().drop(steps - 1).first()
+
 fun polymerizationFromInput(filename: String) =
     PuzzleInput(filename).nonEmptyLines().headTail().let { (t, r) ->
         Polymerization(

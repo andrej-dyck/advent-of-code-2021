@@ -44,14 +44,26 @@ class PolymerizationTest {
 
     @ParameterizedTest
     @CsvSource("1, 7", "2, 13", "5, 97", "10, 3073")
-    fun `check sample input growth`(numberOfSteps: Int, expectedNumberOfElements: Int) {
+    fun `check sample input growth`(numberOfSteps: Int, expectedNumberOfElements: Long) {
         assertThat(
-            sampleInputPolymerization.processResults()
-                .take(numberOfSteps)
-                .last()
-                .length()
+            sampleInputPolymerization.resultAfter(numberOfSteps).length()
         ).isEqualTo(
             expectedNumberOfElements
+        )
+    }
+
+    @ParameterizedTest
+    @CsvSource("1, 1", "2, 5", "10, 1588", "40, 2188189693529")
+    fun `difference of most and least common elements for sample input`(
+        numberOfSteps: Int,
+        expectedDifference: Long
+    ) {
+        assertThat(
+            sampleInputPolymerization
+                .resultAfter(numberOfSteps)
+                .differenceOfMostAndLeastCommonElement()
+        ).isEqualTo(
+            expectedDifference
         )
     }
 

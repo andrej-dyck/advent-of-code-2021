@@ -1,15 +1,33 @@
 package ad.kata.aoc2021.day14
 
 import ad.kata.aoc2021.extensions.minMaxOrNull
+import ad.kata.aoc2021.extensions.toMapMerging
 
-@JvmInline
-value class Polymer(private val template: String) {
+data class Polymer(private val elementPairs: Map<ElementPair, Long>) {
 
-    fun elements() = template.asSequence().map { Element(it) }
+    init {
+        require(elementPairs.isNotEmpty())
+    }
 
-    fun length() = template.length
+    constructor(template: String) : this(
+        template
+            .windowed(2) { Element(it[0]) to Element(it[1]) }
+            .map { it to 1L }
+            .toMapMerging { it.sum() }
+    )
 
-    fun elementCount() = elements().groupingBy { it }.eachCount()
+    fun flatMap(transform: (ElementPair) -> List<ElementPair>) = Polymer(
+        elementPairs
+            .flatMap { kv -> transform(kv.key).map { it to kv.value } }
+            .toMapMerging { it.sum() }
+    )
+
+    fun length() = elementCount().values.sum()
+
+    fun elementCount(): Map<Element, Long> =
+        with(elementPairs.entries) {
+            map { it.key.second to it.value } + (first().key.first to 1L)
+        }.toMapMerging { it.sum() }
 }
 
 @Suppress("FunctionMaxLength")
