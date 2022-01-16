@@ -33,7 +33,7 @@ inline fun <T> Matrix<T>.all(predicate: (T) -> Boolean) = flatten().all(predicat
 
 fun <T> Matrix<T>.adjacentItemsOf(c: Coordinate, vectors: Set<Pair<Int, Int>> = adjacencyVectors) =
     vectors.map { c + it }
-        .mapNotNull { c -> valueAt(c)?.let { c to it } }
+        .mapNotNull { ac -> valueAt(ac)?.let { ac to it } }
         .toMap()
 
 private val adjacencyVectors =
