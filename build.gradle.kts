@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.6.10"
-    id("io.gitlab.arturbosch.detekt").version("1.19.0")
+    id("io.gitlab.arturbosch.detekt") version "1.19.0"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0-RC2"
 }
 
 group = "ad.kata.aoc2021"
@@ -16,9 +17,9 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.8.1"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     // AssertJ
-    testImplementation("org.assertj:assertj-core:3.21.0")
+    testImplementation("org.assertj:assertj-core:3.22.0")
     // jqwik
-    testImplementation("net.jqwik:jqwik:1.6.0")
+    testImplementation("net.jqwik:jqwik:1.6.2")
 }
 
 /* Source sets by Kotlin conventions /src and /test */
